@@ -1,25 +1,33 @@
-import { HStack, Heading, Text, VStack } from "@gluestack-ui/themed";
+import { HStack, Heading, Text, VStack } from '@gluestack-ui/themed';
 
-import { ExerciseCard } from "@components/ExerciseCard";
-import { FlatList } from "react-native";
-import { Group } from "@components/Group";
-import { HomeHeader } from "@components/HomeHeader";
-import { useState } from "react";
+import { AppNavigatorRoutesProps } from '@routes/app.routes';
+import { ExerciseCard } from '@components/ExerciseCard';
+import { FlatList } from 'react-native';
+import { Group } from '@components/Group';
+import { HomeHeader } from '@components/HomeHeader';
+import { useNavigation } from '@react-navigation/native';
+import { useState } from 'react';
 
 export function Home() {
-  const [groupSelected, setGroupSelected] = useState("");
-  const [groups, setGroups] = useState(["Costa", "Biceps", "Ombro", "Pernas"]);
+  const [groupSelected, setGroupSelected] = useState('');
+  const [groups, setGroups] = useState(['Costa', 'Biceps', 'Ombro', 'Pernas']);
   const [exercises, setExercises] = useState([
-    "Puxada frontal",
-    "Remada curvada",
-    "Remada unilateral",
-    "Puxada frontal 2",
-    "Remada curvada 2",
-    "Remada unilateral 2",
-    "Puxada frontal 3",
-    "Remada curvada 4",
-    "Remada unilateral 5",
+    'Puxada frontal',
+    'Remada curvada',
+    'Remada unilateral',
+    'Puxada frontal 2',
+    'Remada curvada 2',
+    'Remada unilateral 2',
+    'Puxada frontal 3',
+    'Remada curvada 4',
+    'Remada unilateral 5',
   ]);
+
+  const navigation = useNavigation<AppNavigatorRoutesProps>();
+
+  function hendleOpenExerciseDetail() {
+    navigation.navigate('exercise');
+  }
 
   return (
     <VStack flex={1}>
@@ -56,7 +64,9 @@ export function Home() {
         <FlatList
           data={exercises}
           keyExtractor={(item) => item}
-          renderItem={({ item }) => <ExerciseCard />}
+          renderItem={({ item }) => (
+            <ExerciseCard onPress={hendleOpenExerciseDetail} />
+          )}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 20 }}
         />
