@@ -7,14 +7,18 @@ import {
   ScrollView,
   Text,
   VStack,
+  useToast,
 } from '@gluestack-ui/themed';
 import { Controller, useForm } from 'react-hook-form';
 
+import { AppError } from '@utils/AppError';
 import { AuthNavigatorRoutesProps } from '@routes/auth.routes';
 import BackgroundImg from '@assets/background.png';
 import { Button } from '@components/Button';
 import { Input } from '@components/Input';
 import Logo from '@assets/logo.svg';
+import { ToastMessage } from '@components/ToastMessage';
+import { api } from '@services/api';
 import { useNavigation } from '@react-navigation/native';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -40,6 +44,7 @@ const signUpSchema = yup.object({
 
 export function SignUp() {
   const navigation = useNavigation<AuthNavigatorRoutesProps>();
+  const toast = useToast();
   const {
     control,
     handleSubmit,
@@ -52,13 +57,31 @@ export function SignUp() {
     navigation.goBack();
   }
 
-  function handleSignUp({
-    name,
-    email,
-    password,
-    password_confirm,
-  }: FormDataProps) {
-    console.log({ name, email, password, password_confirm });
+  async function handleSignUp({ name, email, password }: FormDataProps) {
+    try {
+      const response = await api.post('/users', {
+        name,
+        email,
+        password,
+      });
+      console.log(response.data);
+    } catch (error) {
+      const isAppError = error instanceof AppError;
+      const title = isAppError
+        ? error.message
+        : 'Não foi possível criar a conta. Tente novamente mais tarde.';
+      toast.show({
+        placement: 'top',
+        render: ({ id }) => (
+          <ToastMessage
+            id={id}
+            title={title}
+            action="error"
+            onClose={() => toast.close(id)}
+          />
+        ),
+      });
+    }
   }
 
   return (
