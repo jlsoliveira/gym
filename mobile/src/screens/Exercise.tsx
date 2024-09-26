@@ -26,6 +26,7 @@ type RouteParamsProps = {
 };
 
 export function Exercise() {
+  const [sendingRegister, setSendingRegister] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [exercise, setExercise] = useState<ExerciseDTO>({} as ExerciseDTO);
   const navigation = useNavigation<AppNavigatorRoutesProps>();
@@ -46,6 +47,18 @@ export function Exercise() {
       throw error;
     } finally {
       setIsLoading(false);
+    }
+  }
+
+  async function handleExerciseHistoryRegister() {
+    try {
+      setSendingRegister(true);
+      await api.post('/history', { exercise_id: exerciseId });
+      navigation.navigate('history');
+    } catch (error) {
+      throw error;
+    } finally {
+      setSendingRegister(false);
     }
   }
 
@@ -126,7 +139,11 @@ export function Exercise() {
                 </HStack>
               </HStack>
 
-              <Button title="Marcar como realizado" />
+              <Button
+                title="Marcar como realizado"
+                isLoading={sendingRegister}
+                onPress={handleExerciseHistoryRegister}
+              />
             </Box>
           </VStack>
         )}
