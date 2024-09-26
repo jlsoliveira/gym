@@ -1,24 +1,24 @@
 import {
   BottomTabNavigationProp,
   createBottomTabNavigator,
-} from "@react-navigation/bottom-tabs";
+} from '@react-navigation/bottom-tabs';
 
-import { DefaultTheme } from "@react-navigation/native";
-import { Exercise } from "@screens/Exercise";
-import { History } from "@screens/History";
-import HistorySvg from "@assets/history.svg";
-import { Home } from "@screens/Home";
-import HomeSvg from "@assets/home.svg";
-import { Platform } from "react-native";
-import { Profile } from "@screens/Profile";
-import ProfileSvg from "@assets/profile.svg";
-import { gluestackUIConfig } from "../../config/gluestack-ui.config";
+import { DefaultTheme } from '@react-navigation/native';
+import { Exercise } from '@screens/Exercise';
+import { History } from '@screens/History';
+import HistorySvg from '@assets/history.svg';
+import { Home } from '@screens/Home';
+import HomeSvg from '@assets/home.svg';
+import { Platform } from 'react-native';
+import { Profile } from '@screens/Profile';
+import ProfileSvg from '@assets/profile.svg';
+import { gluestackUIConfig } from '../../config/gluestack-ui.config';
 
 type AppRoutes = {
   home: undefined;
   history: undefined;
   profile: undefined;
-  exercise: undefined;
+  exercise: { exerciseId: string };
 };
 
 export type AppNavigatorRoutesProps = BottomTabNavigationProp<AppRoutes>;
@@ -26,7 +26,7 @@ export type AppNavigatorRoutesProps = BottomTabNavigationProp<AppRoutes>;
 export function AppRoutes() {
   const { Navigator, Screen } = createBottomTabNavigator<AppRoutes>();
   const { tokens } = gluestackUIConfig;
-  const iconSize = tokens.space["6"];
+  const iconSize = tokens.space['6'];
 
   return (
     <Navigator
@@ -38,9 +38,9 @@ export function AppRoutes() {
         tabBarStyle: {
           backgroundColor: tokens.colors.gray600,
           borderTopWidth: 0,
-          height: Platform.OS === "android" ? "auto" : 96,
-          paddingBottom: tokens.space["10"],
-          paddingTop: tokens.space["6"],
+          height: Platform.OS === 'android' ? 'auto' : 96,
+          paddingBottom: tokens.space['10'],
+          paddingTop: tokens.space['6'],
         },
       }}
     >
